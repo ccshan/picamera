@@ -31,9 +31,7 @@ V = np.fromfile(stream, dtype=np.uint8, count=(fwidth//2)*(fheight//2)).\
         repeat(2, axis=0).repeat(2, axis=1)
 # Stack the YUV channels together, crop the actual resolution, convert to
 # floating point for later calculations, and apply the standard biases
-YUV = np.dstack((Y, U, V))[:height, :width, :].astype(np.float)
-YUV[:, :, 0]  = YUV[:, :, 0]  - 16   # Offset Y by 16
-YUV[:, :, 1:] = YUV[:, :, 1:] - 128  # Offset UV by 128
+YUV = np.dstack((Y-16, U-128, V-128))[:height, :width, :].astype(np.float)
 # YUV conversion matrix from ITU-R BT.601 version (SDTV)
 #              Y       U       V
 M = np.array([[1.164,  0.000,  1.596],    # R
